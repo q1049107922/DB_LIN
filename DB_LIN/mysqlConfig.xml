@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 客户端配置文件 -->
+
+<connections>
+    <connection>
+        <!--DB0為寫入庫，其他為只讀-->
+        <url>jdbc:mysql://localhost/db0?useUnicode=true&amp;characterEncoding=utf-8</url>
+        <username>root</username>
+        <password>root</password>
+    </connection>
+    <connection>
+        <url>jdbc:mysql://localhost/db1?useUnicode=true&amp;characterEncoding=utf-8</url>
+        <username>root</username>
+        <password>root</password>
+    </connection>
+    <connection>
+        <url>jdbc:mysql://localhost/db2?useUnicode=true&amp;characterEncoding=utf-8</url>
+        <username>root</username>
+        <password>root</password>
+    </connection>
+</connections>
