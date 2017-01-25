@@ -3,19 +3,64 @@
 
 <connections>
     <connection>
-        <!--DB0為寫入庫，其他為只讀-->
         <url>jdbc:mysql://localhost/db0?useUnicode=true&amp;characterEncoding=utf-8</url>
         <username>root</username>
         <password>root</password>
+        <isForWrite>true</isForWrite>
+        <!--是否为写库-->
+        <parts><!--分库-->
+            <part>
+                <part.id>0</part.id>
+                <part.url>jdbc:mysql://localhost/db0_0?useUnicode=true&amp;characterEncoding=utf-8</part.url>
+                <part.username>root</part.username>
+                <part.password>root</part.password>
+            </part>
+            <part>
+                <part.id>1</part.id>
+                <part.url>jdbc:mysql://localhost/db0_1?useUnicode=true&amp;characterEncoding=utf-8</part.url>
+                <part.username>root</part.username>
+                <part.password>root</part.password>
+            </part>
+        </parts>
     </connection>
     <connection>
         <url>jdbc:mysql://localhost/db1?useUnicode=true&amp;characterEncoding=utf-8</url>
         <username>root</username>
         <password>root</password>
+        <isForWrite>false</isForWrite>
+        <parts><!--分库-->
+            <part>
+                <part.id>0</part.id>
+                <part.url>jdbc:mysql://localhost/db1_0?useUnicode=true&amp;characterEncoding=utf-8</part.url>
+                <part.username>root</part.username>
+                <part.password>root</part.password>
+            </part>
+            <part>
+                <part.id>1</part.id>
+                <part.url>jdbc:mysql://localhost/db1_1?useUnicode=true&amp;characterEncoding=utf-8</part.url>
+                <part.username>root</part.username>
+                <part.password>root</part.password>
+            </part>
+        </parts>
     </connection>
     <connection>
         <url>jdbc:mysql://localhost/db2?useUnicode=true&amp;characterEncoding=utf-8</url>
         <username>root</username>
         <password>root</password>
+        <isForWrite>false</isForWrite>
+        <parts><!--分库-->
+            <part>
+                <part.id>0</part.id>
+                <part.url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</part.url>
+                <part.username>root</part.username>
+                <part.password>root</part.password>
+            </part>
+            <part>
+                <part.id>1</part.id>
+                <part.url>jdbc:mysql://localhost/db2_1?useUnicode=true&amp;characterEncoding=utf-8</part.url>
+                <part.username>root</part.username>
+                <part.password>root</part.password>
+            </part>
+        </parts>
     </connection>
 </connections>
