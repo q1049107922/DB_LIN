@@ -3,63 +3,62 @@
 
 <connections>
     <connection>
-        <url>jdbc:mysql://localhost/db0?useUnicode=true&amp;characterEncoding=utf-8</url>
-        <username>root</username>
-        <password>root</password>
-        <isForWrite>true</isForWrite>
-        <!--是否为写库-->
+        <id>0</id>
+        <isForWrite>true</isForWrite><!--是否为写库-->
         <parts><!--分库-->
             <part>
-                <part.id>0</part.id>
-                <part.url>jdbc:mysql://localhost/db0_0?useUnicode=true&amp;characterEncoding=utf-8</part.url>
-                <part.username>root</part.username>
-                <part.password>root</part.password>
+                <id>00</id>
+                <parentId>0</parentId>
+                <url>jdbc:mysql://localhost/db0_0?useUnicode=true&amp;characterEncoding=utf-8</url>
+                <username>root</username>
+                <password>root</password>
             </part>
             <part>
-                <part.id>1</part.id>
-                <part.url>jdbc:mysql://localhost/db0_1?useUnicode=true&amp;characterEncoding=utf-8</part.url>
-                <part.username>root</part.username>
-                <part.password>root</part.password>
+                <id>01</id>
+                <parentId>0</parentId>
+                <url>jdbc:mysql://localhost/db0_1?useUnicode=true&amp;characterEncoding=utf-8</url>
+                <username>root</username>
+                <password>root</password>
             </part>
         </parts>
     </connection>
     <connection>
-        <url>jdbc:mysql://localhost/db1?useUnicode=true&amp;characterEncoding=utf-8</url>
-        <username>root</username>
-        <password>root</password>
+        <id>1</id>
         <isForWrite>false</isForWrite>
         <parts><!--分库-->
             <part>
-                <part.id>0</part.id>
-                <part.url>jdbc:mysql://localhost/db1_0?useUnicode=true&amp;characterEncoding=utf-8</part.url>
-                <part.username>root</part.username>
-                <part.password>root</part.password>
+                <id>10</id>
+                <parentId>1</parentId>
+                <url>jdbc:mysql://localhost/db1_0?useUnicode=true&amp;characterEncoding=utf-8</url>
+                <username>root</username>
+                <password>root</password>
             </part>
             <part>
-                <part.id>1</part.id>
-                <part.url>jdbc:mysql://localhost/db1_1?useUnicode=true&amp;characterEncoding=utf-8</part.url>
-                <part.username>root</part.username>
-                <part.password>root</part.password>
+                <id>11</id>
+                <parentId>1</parentId>
+                <url>jdbc:mysql://localhost/db1_1?useUnicode=true&amp;characterEncoding=utf-8</url>
+                <username>root</username>
+                <password>root</password>
             </part>
         </parts>
     </connection>
     <connection>
-        <url>jdbc:mysql://localhost/db2?useUnicode=true&amp;characterEncoding=utf-8</url>
-        <username>root</username>
-        <password>root</password>
+        <id>2</id>
         <isForWrite>false</isForWrite>
         <parts><!--分库-->
             <part>
-                <part.id>0</part.id>
-                <part.url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</part.url>
-                <part.username>root</part.username>
-                <part.password>root</part.password>
+                <id>20</id>
+                <parentId>2</parentId>
+                <url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</url>
+                <username>root</username>
+                <password>root</password>
             </part>
             <part>
-                <part.id>1</part.id>
-                <part.url>jdbc:mysql://localhost/db2_1?useUnicode=true&amp;characterEncoding=utf-8</part.url>
-                <part.username>root</part.username>
-                <part.password>root</part.password>
+                <id>21</id>
+                <parentId>2</parentId>
+                <url>jdbc:mysql://localhost/db2_1?useUnicode=true&amp;characterEncoding=utf-8</url>
+                <username>root</username>
+                <password>root</password>
             </part>
         </parts>
     </connection>

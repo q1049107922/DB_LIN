@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import com.DB_LIN.beans.ConnectionLIN;
+import com.DB_LIN.beans.PartDBLIN;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -53,16 +54,25 @@ public class ConnectionFactory {
                             if (conPro.getNodeName().toLowerCase().equals("url")) {
                                 url = conPro.getTextContent();
                             }
+                            if (conPro.getNodeName().toLowerCase().equals("username")) {
+                                username = conPro.getTextContent();
+                            }
+                            if (conPro.getNodeName().toLowerCase().equals("password")) {
+                                password = conPro.getTextContent();
+                            }
+                            NodeList partList = conPro.getChildNodes();
                         }
                     }
                 }
-                ConnectionLIN connectionLIN =new ConnectionLIN();
+                ConnectionLIN connectionLIN = new ConnectionLIN();
                 Connection con = DriverManager.getConnection(url, username, password);
-                connectionLIN.setConnection(con);
+                List<PartDBLIN> partList = new ArrayList<PartDBLIN>();
+
+                connectionLIN.setPartDBLIN(partList);
                 if (doc.getElementsByTagName("isForWrite").item(i).getFirstChild().getNodeValue().toLowerCase().equals("true")) {
                     //写库放在第一位
                     connectionLIN.setIsForWrite(true);
-                    connectionLINs.add(0,connectionLIN);
+                    connectionLINs.add(0, connectionLIN);
                 } else {
                     connectionLIN.setIsForWrite(false);
                     connectionLINs.add(connectionLIN);
@@ -78,7 +88,7 @@ public class ConnectionFactory {
             setConnectionList();
         }
         Random random = new Random();
-        int num = random.nextInt(connectionLINs.size())+1;
+        int num = random.nextInt(connectionLINs.size()) + 1;
         return connectionLINs.get(num).getConnection();
     }
 
