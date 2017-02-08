@@ -22,8 +22,8 @@ public class DAL {
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
             System.out.print(result.getString("Id") + " ");
-            System.out.print(result.getString("user") + " ");
-            System.out.print(result.getString("productId") + " ");
+            System.out.print(result.getString("userName") + " ");
+            System.out.print(result.getString("money") + " ");
         }
         return result;
     }

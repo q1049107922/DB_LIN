@@ -13,8 +13,8 @@ public class Main {
         // write your code here
         DAL dal = new DAL();
         try {
-            dal.select("select * from account");
-            int n = dal.insert("insert into account (user,productId) values ('user1','product2')");
+            dal.select("select * from t_user");
+            int n = dal.insert("insert into t_userProduct(`id`,`userId`,`productName`) values ('id','1_0u001','ÍÛ¹þ¹þ')");
         } catch (SQLException e) {
             e.printStackTrace();
         }

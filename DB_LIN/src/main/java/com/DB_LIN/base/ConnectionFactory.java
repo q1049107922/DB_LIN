@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import com.DB_LIN.beans.ConnectionLIN;
 import com.DB_LIN.beans.PartDBLIN;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -32,6 +33,7 @@ public class ConnectionFactory {
         setConnectionList();
     }
 
+
     private static synchronized void setConnectionList() {
         try {
             connectionLINs = new ArrayList<ConnectionLIN>();
@@ -40,41 +42,34 @@ public class ConnectionFactory {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(f);
 
-            NodeList nl = doc.getElementsByTagName("connection");
-            for (int i = 0; i < nl.getLength(); i++) {
-                Node node = nl.item(i);
-                String username = null;
-                String url = null;
-                String password = null;
-                if (node != null && node.getNodeType() == Node.ELEMENT_NODE) {
-                    NodeList conProList = node.getChildNodes();
-                    for (int j = 0; j < conProList.getLength(); j++) {
-                        Node conPro = conProList.item(j);
-                        if (conPro != null && conPro.getNodeType() == Node.ELEMENT_NODE) {
-                            if (conPro.getNodeName().toLowerCase().equals("url")) {
-                                url = conPro.getTextContent();
-                            }
-                            if (conPro.getNodeName().toLowerCase().equals("username")) {
-                                username = conPro.getTextContent();
-                            }
-                            if (conPro.getNodeName().toLowerCase().equals("password")) {
-                                password = conPro.getTextContent();
-                            }
-                            NodeList partList = conPro.getChildNodes();
-                        }
-                    }
-                }
+            NodeList conn = doc.getElementsByTagName("databases");
+            for (int i = 0; i < conn.getLength(); i++) {
+                Element node = (Element) conn.item(i);
                 ConnectionLIN connectionLIN = new ConnectionLIN();
-                Connection con = DriverManager.getConnection(url, username, password);
-                List<PartDBLIN> partList = new ArrayList<PartDBLIN>();
-
-                connectionLIN.setPartDBLIN(partList);
-                if (doc.getElementsByTagName("isForWrite").item(i).getFirstChild().getNodeValue().toLowerCase().equals("true")) {
+                connectionLIN.setId(node.getAttribute("id"));
+                connectionLIN.setIsForWrite(Boolean.parseBoolean(node.getAttribute("isForWrite")));
+                //NodeList dbList = node.getChildNodes();
+                NodeList dbList = node.getElementsByTagName("database");
+                List<PartDBLIN> partDBLINList = new ArrayList<PartDBLIN>();
+                for (int k = 0; k < dbList.getLength(); k++) {
+                    PartDBLIN partDBLIN = new PartDBLIN();
+                    Element db = (Element) dbList.item(k);
+                    partDBLIN.setId(db.getAttribute("id"));
+                    partDBLIN.setParentId(db.getAttribute("parentId"));
+                    partDBLIN.setTag(db.getAttribute("tag"));
+                    Connection con = DriverManager.getConnection(
+                            db.getElementsByTagName("url").item(0).getFirstChild().getNodeValue()
+                            , db.getElementsByTagName("username").item(0).getFirstChild().getNodeValue()
+                            , db.getElementsByTagName("password").item(0).getFirstChild().getNodeValue()
+                    );
+                    partDBLIN.setConnection(con);
+                    partDBLINList.add(partDBLIN);
+                }
+                connectionLIN.setPartDBLIN(partDBLINList);
+                if (connectionLIN.getIsForWrite()) {
                     //写库放在第一位
-                    connectionLIN.setIsForWrite(true);
                     connectionLINs.add(0, connectionLIN);
                 } else {
-                    connectionLIN.setIsForWrite(false);
                     connectionLINs.add(connectionLIN);
                 }
             }
@@ -89,13 +84,13 @@ public class ConnectionFactory {
         }
         Random random = new Random();
         int num = random.nextInt(connectionLINs.size()) + 1;
-        return connectionLINs.get(num).getConnection();
+        return connectionLINs.get(num).getPartDBLIN().get(0).getConnection();
     }
 
     public static Connection getIsForWriteConnection() {
         if (connectionLINs.size() == 0) {
             setConnectionList();
         }
-        return connectionLINs.get(0).getConnection();
+        return connectionLINs.get(0).getPartDBLIN().get(0).getConnection();
     }
 }

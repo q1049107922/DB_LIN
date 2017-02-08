@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--分表配置-->
+<configurations><!--tag是用来标记table，供路由使用-->
+    <tables id="user" name="t_user">
+        <table ref="user" name="t_user00" id="0" tag="0"></table>
+        <table ref="user" name="t_user01" id="1" tag="1"></table>
+        <table ref="user" name="t_user02" id="2" tag="2"></table>
+    </tables>
+
+    <tables id="userProduct" name="t_userProduct">
+        <table ref="userProduct" name="t_userProduct00" id="0" tag="0"></table>
+        <table ref="userProduct" name="t_userProduct01" id="1" tag="1"></table>
+    </tables>
+</configurations>

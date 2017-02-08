@@ -1,65 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 客户端配置文件 -->
 
-<connections>
-    <connection>
-        <id>0</id>
-        <isForWrite>true</isForWrite><!--是否为写库-->
-        <parts><!--分库-->
-            <part>
-                <id>00</id>
-                <parentId>0</parentId>
-                <url>jdbc:mysql://localhost/db0_0?useUnicode=true&amp;characterEncoding=utf-8</url>
-                <username>root</username>
-                <password>root</password>
-            </part>
-            <part>
-                <id>01</id>
-                <parentId>0</parentId>
-                <url>jdbc:mysql://localhost/db0_1?useUnicode=true&amp;characterEncoding=utf-8</url>
-                <username>root</username>
-                <password>root</password>
-            </part>
-        </parts>
-    </connection>
-    <connection>
-        <id>1</id>
-        <isForWrite>false</isForWrite>
-        <parts><!--分库-->
-            <part>
-                <id>10</id>
-                <parentId>1</parentId>
-                <url>jdbc:mysql://localhost/db1_0?useUnicode=true&amp;characterEncoding=utf-8</url>
-                <username>root</username>
-                <password>root</password>
-            </part>
-            <part>
-                <id>11</id>
-                <parentId>1</parentId>
-                <url>jdbc:mysql://localhost/db1_1?useUnicode=true&amp;characterEncoding=utf-8</url>
-                <username>root</username>
-                <password>root</password>
-            </part>
-        </parts>
-    </connection>
-    <connection>
-        <id>2</id>
-        <isForWrite>false</isForWrite>
-        <parts><!--分库-->
-            <part>
-                <id>20</id>
-                <parentId>2</parentId>
-                <url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</url>
-                <username>root</username>
-                <password>root</password>
-            </part>
-            <part>
-                <id>21</id>
-                <parentId>2</parentId>
-                <url>jdbc:mysql://localhost/db2_1?useUnicode=true&amp;characterEncoding=utf-8</url>
-                <username>root</username>
-                <password>root</password>
-            </part>
-        </parts>
-    </connection>
-</connections>
+<configurations>
+    <!--是否为写库-->
+    <databases id="0" isForWrite="true"><!--分库是为了解决数据量大，磁盘不够用问题；分表是为了解决数据量大，性能问题-->
+        <database id="0" tag="0_0" parentId="0">
+            <url>jdbc:mysql://localhost/db0_0?useUnicode=true&amp;characterEncoding=utf-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+        <database id="1" tag="0_1" parentId="0">
+            <url>jdbc:mysql://localhost/db0_1?useUnicode=true&amp;characterEncoding=utf-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+    </databases>
+
+    <databases id="1" isForWrite="false">
+        <database id="0" tag="1_0" parentId="1">
+            <url>jdbc:mysql://localhost/db1_0?useUnicode=true&amp;characterEncoding=utf-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+        <database id="1" tag="1_1" parentId="1">
+            <url>jdbc:mysql://localhost/db1_1?useUnicode=true&amp;characterEncoding=utf-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+    </databases>
+
+    <databases id="2" isForWrite="true">
+        <database id="0" tag="2_0" parentId="2">
+            <url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+        <database id="1" tag="2_1" parentId="2">
+            <id>21</id>
+            <parentId>2</parentId>
+            <url>jdbc:mysql://localhost/db2_1?useUnicode=true&amp;characterEncoding=utf-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+    </databases>
+</configurations>

@@ -8,9 +8,8 @@ import java.util.List;
  */
 public class ConnectionLIN {
     private String id;
-
     private Boolean isForWrite;
-    private List<PartDBLIN> partDBLIN;
+    private List<PartDBLIN> databases;
 
     public String getId() {
         return id;
@@ -21,11 +20,11 @@ public class ConnectionLIN {
     }
 
     public List<PartDBLIN> getPartDBLIN() {
-        return partDBLIN;
+        return databases;
     }
 
-    public void setPartDBLIN(List<PartDBLIN> partDBLIN) {
-        this.partDBLIN = partDBLIN;
+    public void setPartDBLIN(List<PartDBLIN> databases) {
+        this.databases = databases;
     }
 
     public Boolean getIsForWrite() {
