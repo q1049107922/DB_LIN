@@ -2,6 +2,9 @@
 <!-- 客户端配置文件 -->
 
 <configurations>
+    <pool>
+        
+    </pool>
     <!--是否为写库-->
     <databases id="0" isForWrite="true"><!--分库是为了解决数据量大，磁盘不够用问题；分表是为了解决数据量大，性能问题-->
         <database id="0" tag="0_0" parentId="0">

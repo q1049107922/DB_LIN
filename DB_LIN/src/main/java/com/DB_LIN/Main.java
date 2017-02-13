@@ -15,6 +15,7 @@ public class Main {
         try {
             dal.select("select * from t_user");
             int n = dal.insert("insert into t_userProduct(`id`,`userId`,`productName`) values ('id','1_0u001','ÍÛ¹þ¹þ')");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
