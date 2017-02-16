@@ -3,7 +3,7 @@
 
 <configurations>
     <pool>
-        
+        <size></size>
     </pool>
     <!--是否为写库-->
     <databases id="0" isForWrite="true"><!--分库是为了解决数据量大，磁盘不够用问题；分表是为了解决数据量大，性能问题-->
@@ -32,7 +32,7 @@
         </database>
     </databases>
 
-    <databases id="2" isForWrite="true">
+    <databases id="2" isForWrite="false">
         <database id="0" tag="2_0" parentId="2">
             <url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</url>
             <username>root</username>

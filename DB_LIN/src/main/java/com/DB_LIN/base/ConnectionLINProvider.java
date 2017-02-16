@@ -38,7 +38,6 @@ public class ConnectionLINProvider {
         setConnectionList();
     }
 
-
     private void setConnectionList() {
         setConnForRead();
         setConnForWrite();
