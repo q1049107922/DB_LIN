@@ -3,7 +3,11 @@
 
 <configurations>
     <pool>
-        <size></size>
+        <initialSize>20</initialSize>
+        <maxSize>100</maxSize><!--此处只是作为一个最大的值的参考值，实际使用可能会略大于此-->
+        <maxFreeSize>50</maxFreeSize>
+        <inCreaseSize>10</inCreaseSize>
+        <timeOut>10</timeOut><!--second-->
     </pool>
     <!--是否为写库-->
     <databases id="0" isForWrite="true"><!--分库是为了解决数据量大，磁盘不够用问题；分表是为了解决数据量大，性能问题-->

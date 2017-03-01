@@ -1,10 +1,7 @@
 package com.DB_LIN;
 
 import com.DB_LIN.base.DAL;
-import com.mysql.jdbc.Driver;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Main {

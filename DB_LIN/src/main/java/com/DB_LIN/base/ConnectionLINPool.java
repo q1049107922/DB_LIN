@@ -1,8 +1,14 @@
 package com.DB_LIN.base;
 
 import com.DB_LIN.beans.ConnectionLIN;
+import com.DB_LIN.beans.PoolConfig;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.sql.DataSource;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,7 +23,6 @@ import java.util.logging.Logger;
  */
 public class ConnectionLINPool/* implements DataSource*/ {
 
-    static int poolSize;
     //创建一个连接池
     private static Queue<ConnectionLINProvider> usedPool = new ConcurrentLinkedQueue<ConnectionLINProvider>();
 
@@ -25,14 +30,27 @@ public class ConnectionLINPool/* implements DataSource*/ {
 
     public static ThreadLocal<ConnectionLINProvider> currentConnectionLIN = new ThreadLocal<ConnectionLINProvider>();
 
+    protected static PoolConfig poolConfig = null;
+
     //初始化10个连接
     static {
         try {
-            for (int i = 0; i < 10; i++) {
+            File f = new File("mysqlConfig.xml");
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = null;
+            builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(f);
+            Element pool = (Element) doc.getElementsByTagName("pool").item(0);
+            poolConfig.setInitialSize(Integer.parseInt(pool.getElementsByTagName("initialSize").item(0).getFirstChild().getNodeValue()));
+            poolConfig.setMaxSize(Integer.parseInt(pool.getElementsByTagName("maxSize").item(0).getFirstChild().getNodeValue()));
+            poolConfig.setMaxFreeSize(Integer.parseInt(pool.getElementsByTagName("maxFreeSize").item(0).getFirstChild().getNodeValue()));
+            poolConfig.setInCreaseSize(Integer.parseInt(pool.getElementsByTagName("inCreaseSize").item(0).getFirstChild().getNodeValue()));
+            poolConfig.setTimeOut(Integer.parseInt(pool.getElementsByTagName("timeOut").item(0).getFirstChild().getNodeValue()));
+
+            for (int i = 0; i < poolConfig.getInitialSize(); i++) {
                 ConnectionLINProvider connp = new ConnectionLINProvider();
                 unUsedPool.add(connp);
             }
-            poolSize = 10;
         } catch (Exception e) {
             throw new ExceptionInInitializerError("数据库连接失败，请检查配置");
         }
@@ -45,14 +63,31 @@ public class ConnectionLINPool/* implements DataSource*/ {
     /*
     *
     * */
-    public ConnectionLINProvider getConnectionFromPool() {
-        if (currentConnectionLIN.get() == null) {
-            if(unUsedPool.isEmpty()){
-                increasePool();
+    public ConnectionLINProvider getCurrentConnectionLIN() {
+        try {
+            if (currentConnectionLIN.get() == null) {
+                ConnectionLINProvider conn = null;
+                for (int i = 0; i < poolConfig.getTimeOut() * 10; i++) {
+                    if ((conn = unUsedPool.poll()) != null) {
+                        usedPool.add(conn);
+                        currentConnectionLIN.set(conn);
+                        break;
+                    } else {
+                        if (increasePool()) {
+                            break;
+                        } else {
+                            Thread.currentThread().wait(100);
+                        }
+                    }
+                }
+                if(conn == null){
+                    throw new ExceptionInInitializerError("获取数据库连接超时");
+                }
+                usedPool.add(conn);
+                currentConnectionLIN.set(conn);
             }
-            ConnectionLINProvider conn = unUsedPool.poll();
-            usedPool.add(conn);
-            currentConnectionLIN.set(conn);
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError("获取数据库连接失败");
         }
         return currentConnectionLIN.get();
     }
@@ -60,23 +95,28 @@ public class ConnectionLINPool/* implements DataSource*/ {
     /*
     * 另起一个线程扩容线程池
     * */
-    public void increasePool(){
-        ConnectionLINProvider connp = new ConnectionLINProvider();
-        unUsedPool.add(connp);
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    for (int i = 0; i < 4; i++) {
-                        ConnectionLINProvider connp = new ConnectionLINProvider();
-                        unUsedPool.add(connp);
+    public boolean increasePool() {
+        if (usedPool.size() + unUsedPool.size()+ poolConfig.getInCreaseSize() < poolConfig.getMaxSize()) {
+            ConnectionLINProvider connp = new ConnectionLINProvider();
+            unUsedPool.add(connp);
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        for (int i = 1; i < poolConfig.getInCreaseSize(); i++) {
+                            ConnectionLINProvider connp = new ConnectionLINProvider();
+                            unUsedPool.add(connp);
+                        }
+                    } catch (Exception e) {
+                        throw new ExceptionInInitializerError("数据库连接失败，请检查配置");
                     }
-                } catch (Exception e) {
-                    throw new ExceptionInInitializerError("数据库连接失败，请检查配置");
                 }
-            }
-        }.start();
+            }.start();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //释放资源
@@ -98,15 +138,15 @@ public class ConnectionLINPool/* implements DataSource*/ {
     /*
     * 另起线程去除缩容
     * */
-    private void decreasePool(){
-        new Thread(){
+    private void decreasePool() {
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                int ss = unUsedPool.size();
-                if(ss>100){//max
-                    for (int i = 0; i < (ss-100); i++) {
-                        if(unUsedPool.isEmpty()){
+                int size = unUsedPool.size() + usedPool.size();
+                if (size > poolConfig.getMaxSize()) {//max
+                    for (int i = 0; i < (size - poolConfig.getMaxSize()); i++) {
+                        if (unUsedPool.isEmpty()) {
                             break;
                         }
                         unUsedPool.remove();
@@ -117,14 +157,11 @@ public class ConnectionLINPool/* implements DataSource*/ {
     }
 
     public ConnectionLIN getConnectionForRead() {
-        return getConnectionFromPool().getConnectionForRead();
+        return getCurrentConnectionLIN().getConnectionForRead();
     }
 
     public ConnectionLIN getConnectionForWrite() {
-        return getConnectionFromPool().getConnectionForWrite();
+        return getCurrentConnectionLIN().getConnectionForWrite();
     }
 
-    public ConnectionLINProvider getCurrentConnectionLIN() {
-        return currentConnectionLIN.get();
-    }
 }
