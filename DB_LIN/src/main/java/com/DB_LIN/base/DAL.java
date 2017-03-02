@@ -43,7 +43,7 @@ public class DAL {
     }
 
     public int insert(String sql) throws SQLException {
-        PreparedStatement preparedStatement = getConn().getConnectionForRead().getPartDBLIN().get(0)
+        PreparedStatement preparedStatement = getConn().getConnectionForWrite().getPartDBLIN().get(0)
                 .getConnection().prepareStatement(sql);
         return preparedStatement.executeUpdate();
     }

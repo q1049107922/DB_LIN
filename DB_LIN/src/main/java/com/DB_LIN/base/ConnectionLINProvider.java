@@ -131,14 +131,14 @@ public class ConnectionLINProvider {
 
     public ConnectionLIN getConnectionForRead() {
         if (connForRead == null) {
-            setConnectionList();
+            setConnForRead();
         }
         return connForRead;
     }
 
     public ConnectionLIN getConnectionForWrite() {
         if (connForWrite == null) {
-            setConnectionList();
+            setConnForWrite();
         }
         return connForWrite;
     }
