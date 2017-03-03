@@ -31,7 +31,7 @@ public class DAL {
     public ResultSet select(String sql, Object... args) throws SQLException {
         PreparedStatement preparedStatement = getConn().getConnectionForRead().getPartDBLIN().get(0)
                 .getConnection().prepareStatement(sql);
-
+        
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
             System.out.print(result.getString("Id") + " ");

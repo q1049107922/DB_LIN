@@ -9,7 +9,16 @@ public class PartDBLIN {
     private String id;
     private String parentId;
     private String tag;
+    private String dbName;
     private Connection connection;
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
 
     public String getParentId() {
         return parentId;

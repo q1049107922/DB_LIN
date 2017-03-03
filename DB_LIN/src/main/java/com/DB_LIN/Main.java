@@ -8,6 +8,9 @@ public class Main {
 
     public static void main(String[] args) {
         // write your code here
+
+        int s = 585/100;
+
         DAL dal = new DAL();
         try {
             dal.select("select * from t_user");

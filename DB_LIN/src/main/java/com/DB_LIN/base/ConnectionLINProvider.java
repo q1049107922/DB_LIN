@@ -109,6 +109,7 @@ public class ConnectionLINProvider {
                     partDBLIN.setId(db.getAttribute("id"));
                     partDBLIN.setParentId(db.getAttribute("parentId"));
                     partDBLIN.setTag(db.getAttribute("tag"));
+                    partDBLIN.setDbName(db.getAttribute("dbName"));
                     Connection con = DriverManager.getConnection(
                             db.getElementsByTagName("url").item(0).getFirstChild().getNodeValue()
                             , db.getElementsByTagName("username").item(0).getFirstChild().getNodeValue()

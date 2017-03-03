@@ -11,6 +11,19 @@ public class ConnectionLIN {
     private Boolean isForWrite;
     private List<PartDBLIN> databases;
 
+    /*
+    * 通过数据库配置的 tag标记 判断返回的具体是那个库
+    * */
+    public PartDBLIN getPartDBLIN(String dbTag) {
+        int i = 0;
+        for (; i < databases.size(); i++) {
+            if (databases.get(i).getTag().equals(dbTag)){
+                break;
+            }
+        }
+        return databases.get(i);
+    }
+
     public String getId() {
         return id;
     }

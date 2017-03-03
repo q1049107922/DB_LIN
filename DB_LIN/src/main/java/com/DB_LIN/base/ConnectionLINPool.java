@@ -67,7 +67,8 @@ public class ConnectionLINPool/* implements DataSource*/ {
         try {
             if (currentConnectionLIN.get() == null) {
                 ConnectionLINProvider conn = null;
-                for (int i = 0; i < poolConfig.getTimeOut() * 10; i++) {
+                long startTime = System.currentTimeMillis();
+                for (; ; ) {
                     if ((conn = unUsedPool.poll()) != null) {
                         usedPool.add(conn);
                         currentConnectionLIN.set(conn);
@@ -75,12 +76,13 @@ public class ConnectionLINPool/* implements DataSource*/ {
                     } else {
                         if (increasePool()) {
                             break;
-                        } else {
-                            Thread.currentThread().wait(100);
                         }
                     }
+                    if ((System.currentTimeMillis() - startTime) >= poolConfig.getTimeOut()) {
+                        break;
+                    }
                 }
-                if(conn == null){
+                if (conn == null) {
                     throw new ExceptionInInitializerError("获取数据库连接超时");
                 }
                 usedPool.add(conn);
@@ -96,7 +98,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
     * 另起一个线程扩容线程池
     * */
     public boolean increasePool() {
-        if (usedPool.size() + unUsedPool.size()+ poolConfig.getInCreaseSize() < poolConfig.getMaxSize()) {
+        if (usedPool.size() + unUsedPool.size() + poolConfig.getInCreaseSize() < poolConfig.getMaxSize()) {
             ConnectionLINProvider connp = new ConnectionLINProvider();
             unUsedPool.add(connp);
             new Thread() {

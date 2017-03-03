@@ -17,12 +17,13 @@
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- *//*
+ */
 
 package com.DB_LIN.orm;
 
 import com.DB_LIN.base.ConnectionLINPool;
 import com.DB_LIN.base.DAL;
+import com.DB_LIN.beans.ConnectionLIN;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -34,44 +35,40 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
-*/
+
 /**
  * 使用ORM功能的DAO基类
  * <p>
  * 提供标准的excute方法，由子类继承后，进行业务封装扩展
  * </p>
  * @author Service Platform Architecture Team (spat@58.com)
- *//*
+ */
 
 public class BaseDao {
 	
-	public boolean excute(String sql, Object... objects) throws Exception {
-		Connection connection = null;
+	public boolean excute(String sql,String dbTag ,String tableTag, Object... objects) throws Exception {
+		ConnectionLIN connection = null;
 		PreparedStatement ps = null;
 		try {
-			connection =  DAL.getConn().getConnectionForWrite();
-			ps = connection.prepareStatement(sql);
-			if(objects!=null && objects.length>0){
-				for(int i=0; i<objects.length; i++){
-					ps.setObject(i+1, objects[i]);
+			connection = DAL.getConn().getConnectionForWrite();
+			ps = connection.getPartDBLIN(dbTag).getConnection().prepareStatement(sql);
+			if (objects != null && objects.length > 0) {
+				for (int i = 0; i < objects.length; i++) {
+					ps.setObject(i + 1, objects[i]);
 				}
 			}
 			return ps.execute();
 		} finally {
 			DAL.getConn().release();
-			*/
-/*Oceanus.closeStatement(ps);
-			Oceanus.closeConnection(connection);*//*
-
 		}
 	}
 	
 	public int excuteUpdate(String sql, Object... objects) throws Exception {
-		Connection connection = null;
+		ConnectionLIN connection = null;
 		PreparedStatement ps = null;
 		try {
 			connection =  DAL.getConn().getConnectionForWrite();
-			ps = connection.prepareStatement(sql);
+			ps = connection.getPartDBLIN().get(0).getConnection().prepareStatement(sql);
 			if(objects!=null && objects.length>0){
 				for(int i=0; i<objects.length; i++){
 					ps.setObject(i+1, objects[i]);
@@ -80,20 +77,16 @@ public class BaseDao {
 			return ps.executeUpdate();
 		} finally {
 			DAL.getConn().release();
-			*/
-/*Oceanus.closeStatement(ps);
-			Oceanus.closeConnection(connection);*//*
-
 		}
 	}
 	
 	public <T> List<T> excuteQuery(Class<T> clazz, String sql, Object... objects) throws Exception {
-		Connection connection = null;
+		ConnectionLIN connection = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			connection =  DAL.getConn().getConnectionForRead();
-			ps = connection.prepareStatement(sql);
+			ps = connection.getPartDBLIN().get(0).getConnection().prepareStatement(sql);
 			if(objects!=null && objects.length>0){
 				for(int i=0; i<objects.length; i++){
 					ps.setObject(i+1, objects[i]);
@@ -161,4 +154,4 @@ public class BaseDao {
 		return dataList;
 	}
 
-}*/
+}

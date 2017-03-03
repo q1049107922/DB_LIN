@@ -7,16 +7,16 @@
         <maxSize>100</maxSize><!--此处只是作为一个最大的值的参考值，实际使用可能会略大于此-->
         <maxFreeSize>50</maxFreeSize>
         <inCreaseSize>10</inCreaseSize>
-        <timeOut>10</timeOut><!--second-->
+        <timeOut>10</timeOut><!--millisecond-->
     </pool>
     <!--是否为写库-->
     <databases id="0" isForWrite="true"><!--分库是为了解决数据量大，磁盘不够用问题；分表是为了解决数据量大，性能问题-->
-        <database id="0" tag="0_0" parentId="0">
+        <database id="0" tag="0_0" parentId="0" dbName ="db0_0">
             <url>jdbc:mysql://localhost/db0_0?useUnicode=true&amp;characterEncoding=utf-8</url>
             <username>root</username>
             <password>root</password>
         </database>
-        <database id="1" tag="0_1" parentId="0">
+        <database id="1" tag="0_1" parentId="0" dbName="db0_1">
             <url>jdbc:mysql://localhost/db0_1?useUnicode=true&amp;characterEncoding=utf-8</url>
             <username>root</username>
             <password>root</password>
@@ -24,12 +24,12 @@
     </databases>
 
     <databases id="1" isForWrite="false">
-        <database id="0" tag="1_0" parentId="1">
+        <database id="0" tag="1_0" parentId="1" dbName="db1_0">
             <url>jdbc:mysql://localhost/db1_0?useUnicode=true&amp;characterEncoding=utf-8</url>
             <username>root</username>
             <password>root</password>
         </database>
-        <database id="1" tag="1_1" parentId="1">
+        <database id="1" tag="1_1" parentId="1" dbName="db1_1">
             <url>jdbc:mysql://localhost/db1_1?useUnicode=true&amp;characterEncoding=utf-8</url>
             <username>root</username>
             <password>root</password>
@@ -37,12 +37,12 @@
     </databases>
 
     <databases id="2" isForWrite="false">
-        <database id="0" tag="2_0" parentId="2">
+        <database id="0" tag="2_0" parentId="2" dbName="db2_0">
             <url>jdbc:mysql://localhost/db2_0?useUnicode=true&amp;characterEncoding=utf-8</url>
             <username>root</username>
             <password>root</password>
         </database>
-        <database id="1" tag="2_1" parentId="2">
+        <database id="1" tag="2_1" parentId="2" dbName="db2_1">
             <id>21</id>
             <parentId>2</parentId>
             <url>jdbc:mysql://localhost/db2_1?useUnicode=true&amp;characterEncoding=utf-8</url>
