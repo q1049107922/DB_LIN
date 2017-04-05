@@ -74,6 +74,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
                         currentConnectionLIN.set(conn);
                         break;
                     } else {
+                        Thread.currentThread().wait(100);//
                         if (increasePool()) {
                             break;
                         }

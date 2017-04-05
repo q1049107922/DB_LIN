@@ -1,10 +1,12 @@
+/*
 package com.DB_LIN.util.sqlparser;
 
 import java.util.List;
 
-/**
+*
  * Created by b_lin on 2017/3/2.
- */
+
+
 public class Test {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -21,3 +23,4 @@ public class Test {
         List<SqlSegment> resultList=test.getParsedSqlList(testSql);//保存解析结果
     }
 }
+*/
