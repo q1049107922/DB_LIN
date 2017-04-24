@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class DataSourceLIN implements DataSource {
 
-    //´´½¨Ò»¸öÁ¬½Ó³Ø
+    //åˆ›å»ºä¸€ä¸ªè¿æ¥æ± 
     private static Queue<Connection> usedPool = new ConcurrentLinkedQueue<Connection>();
 
     private static Queue<Connection> unUsedPool = new ConcurrentLinkedQueue<Connection>();
@@ -75,19 +75,19 @@ public class DataSourceLIN implements DataSource {
                     }
                 }
                 if (conn == null) {
-                    throw new ExceptionInInitializerError("»ñÈ¡Êı¾İ¿âÁ¬½Ó³¬Ê±");
+                    throw new ExceptionInInitializerError("è·å–æ•°æ®åº“è¿æ¥è¶…æ—¶");
                 }
                 usedPool.add(conn);
                 currentConnectionLIN.set(conn);
             }
         } catch (Exception e) {
-            throw new ExceptionInInitializerError("»ñÈ¡Êı¾İ¿âÁ¬½ÓÊ§°Ü");
+            throw new ExceptionInInitializerError("è·å–æ•°æ®åº“è¿æ¥å¤±è´¥");
         }
         return currentConnectionLIN.get();
     }
 
     /*
-    * ÁíÆğÒ»¸öÏß³ÌÀ©ÈİÏß³Ì³Ø
+    * å¦èµ·ä¸€ä¸ªçº¿ç¨‹æ‰©å®¹çº¿ç¨‹æ± 
     * */
     public boolean increasePool() throws SQLException {
         if (usedPool.size() + unUsedPool.size() + poolConfig.getInCreaseSize() < poolConfig.getMaxSize()) {
@@ -103,7 +103,7 @@ public class DataSourceLIN implements DataSource {
                             unUsedPool.add(connp);
                         }
                     } catch (Exception e) {
-                        throw new ExceptionInInitializerError("Êı¾İ¿âÁ¬½ÓÊ§°Ü£¬Çë¼ì²éÅäÖÃ");
+                        throw new ExceptionInInitializerError("æ•°æ®åº“è¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥é…ç½®");
                     }
                 }
             }.start();

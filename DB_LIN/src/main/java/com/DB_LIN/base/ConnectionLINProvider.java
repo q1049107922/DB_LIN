@@ -26,13 +26,13 @@ import java.util.Random;
  * Created by b_lin on 2017/1/23.
  */
 public class ConnectionLINProvider {
-    //Ò»¸öÏß³ÌÖ»ĞèÒª¶ÁºÍĞ´Á½¸öÁ´½Ó¼´¿É£»ÎŞĞèÀË·Ñ¹ı¶àµÄ¶Á¿âÁ´½Ó
+    //ä¸€ä¸ªçº¿ç¨‹åªéœ€è¦è¯»å’Œå†™ä¸¤ä¸ªé“¾æ¥å³å¯ï¼›æ— éœ€æµªè´¹è¿‡å¤šçš„è¯»åº“é“¾æ¥
     private ConnectionLIN connForRead;
 
     private ConnectionLIN connForWrite;
 
     /*
-    * ³õÊ¼»¯ËùÓĞµÄÊı¾İ¿âÁ¬½Ó
+    * åˆå§‹åŒ–æ‰€æœ‰çš„æ•°æ®åº“è¿æ¥
     * */
     public ConnectionLINProvider() {
         setConnectionList();
@@ -77,7 +77,7 @@ public class ConnectionLINProvider {
                     connectionLIN.setPartDBLIN(partDBLINList);
                     connForWrite = connectionLIN;
                 } else {
-                    //Ã»ÓĞĞ´¿â
+                    //æ²¡æœ‰å†™åº“
                 }
             }
         } catch (Exception e) {
@@ -93,14 +93,14 @@ public class ConnectionLINProvider {
             builder = factory.newDocumentBuilder();
             Document doc = builder.parse(f);
             NodeList conn = doc.getElementsByTagName("databases");
-            //Ëæ»úÒ»¸ö¶Á¿â
+            //éšæœºä¸€ä¸ªè¯»åº“
             Random ran = new Random();
             int i = ran.nextInt(conn.getLength());
             Element node = (Element) conn.item(i);
             ConnectionLIN connectionLIN = new ConnectionLIN();
             connectionLIN.setId(node.getAttribute("id"));
             connectionLIN.setIsForWrite(Boolean.parseBoolean(node.getAttribute("isForWrite")));
-            if (!connectionLIN.getIsForWrite()) {//¶Á¿â
+            if (!connectionLIN.getIsForWrite()) {//è¯»åº“
                 NodeList dbList = node.getElementsByTagName("database");
                 List<PartDBLIN> partDBLINList = new ArrayList<PartDBLIN>();
                 for (int k = 0; k < dbList.getLength(); k++) {

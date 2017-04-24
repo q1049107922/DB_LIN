@@ -12,7 +12,7 @@ public class ConnectionLIN {
     private List<PartDBLIN> databases;
 
     /*
-    * Í¨¹ıÊı¾İ¿âÅäÖÃµÄ tag±ê¼Ç ÅĞ¶Ï·µ»ØµÄ¾ßÌåÊÇÄÇ¸ö¿â
+    * é€šè¿‡æ•°æ®åº“é…ç½®çš„ tagæ ‡è®° åˆ¤æ–­è¿”å›çš„å…·ä½“æ˜¯é‚£ä¸ªåº“
     * */
     public PartDBLIN getPartDBLIN(String dbTag) {
         int i = 0;

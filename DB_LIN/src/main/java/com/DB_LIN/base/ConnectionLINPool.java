@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class ConnectionLINPool/* implements DataSource*/ {
 
-    //´´½¨Ò»¸öÁ¬½Ó³Ø
+    //åˆ›å»ºä¸€ä¸ªè¿æ¥æ± 
     private static Queue<ConnectionLINProvider> usedPool = new ConcurrentLinkedQueue<ConnectionLINProvider>();
 
     private static Queue<ConnectionLINProvider> unUsedPool = new ConcurrentLinkedQueue<ConnectionLINProvider>();
@@ -32,7 +32,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
 
     protected static PoolConfig poolConfig = null;
 
-    //³õÊ¼»¯10¸öÁ¬½Ó
+    //åˆå§‹åŒ–10ä¸ªè¿æ¥
     static {
         try {
             File f = new File("mysqlConfig.xml");
@@ -52,7 +52,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
                 unUsedPool.add(connp);
             }
         } catch (Exception e) {
-            throw new ExceptionInInitializerError("Êı¾İ¿âÁ¬½ÓÊ§°Ü£¬Çë¼ì²éÅäÖÃ");
+            throw new ExceptionInInitializerError("æ•°æ®åº“è¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥é…ç½®");
         }
     }
 
@@ -84,19 +84,19 @@ public class ConnectionLINPool/* implements DataSource*/ {
                     }
                 }
                 if (conn == null) {
-                    throw new ExceptionInInitializerError("»ñÈ¡Êı¾İ¿âÁ¬½Ó³¬Ê±");
+                    throw new ExceptionInInitializerError("è·å–æ•°æ®åº“è¿æ¥è¶…æ—¶");
                 }
                 usedPool.add(conn);
                 currentConnectionLIN.set(conn);
             }
         } catch (Exception e) {
-            throw new ExceptionInInitializerError("»ñÈ¡Êı¾İ¿âÁ¬½ÓÊ§°Ü");
+            throw new ExceptionInInitializerError("è·å–æ•°æ®åº“è¿æ¥å¤±è´¥");
         }
         return currentConnectionLIN.get();
     }
 
     /*
-    * ÁíÆğÒ»¸öÏß³ÌÀ©ÈİÏß³Ì³Ø
+    * å¦èµ·ä¸€ä¸ªçº¿ç¨‹æ‰©å®¹çº¿ç¨‹æ± 
     * */
     public boolean increasePool() {
         if (usedPool.size() + unUsedPool.size() + poolConfig.getInCreaseSize() < poolConfig.getMaxSize()) {
@@ -112,7 +112,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
                             unUsedPool.add(connp);
                         }
                     } catch (Exception e) {
-                        throw new ExceptionInInitializerError("Êı¾İ¿âÁ¬½ÓÊ§°Ü£¬Çë¼ì²éÅäÖÃ");
+                        throw new ExceptionInInitializerError("æ•°æ®åº“è¿æ¥å¤±è´¥ï¼Œè¯·æ£€æŸ¥é…ç½®");
                     }
                 }
             }.start();
@@ -122,7 +122,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
         }
     }
 
-    //ÊÍ·Å×ÊÔ´
+    //é‡Šæ”¾èµ„æº
     public void release() {
         try {
             ConnectionLINProvider conn = currentConnectionLIN.get();
@@ -139,7 +139,7 @@ public class ConnectionLINPool/* implements DataSource*/ {
     }
 
     /*
-    * ÁíÆğÏß³ÌÈ¥³ıËõÈİ
+    * å¦èµ·çº¿ç¨‹å»é™¤ç¼©å®¹
     * */
     private void decreasePool() {
         new Thread() {
